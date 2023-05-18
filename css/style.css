@@ -1,5 +1,5 @@
 @font-face { 
-  font-family: News Cycle; 
+  font-family: arial, Helvetica, sans-serif; 
     src: url('../fonts/NewsCycle-Regular.eot'); 
     src: local("News Cycle"), url('../fonts/NewsCycle-Regular.ttf'); 
 } 
@@ -37,7 +37,7 @@ img {
 }
 
 h1, h2, h3, h4, h5, h6 { 
-  font: normal 200% 'News Cycle', arial, sans-serif;
+  font: normal 200% arial, Helvetica, sans-serif; 
   color: #222;
   margin: 0 0 15px 0;
   padding: 15px 0 5px 0;
@@ -48,7 +48,7 @@ h1 {
 }
 
 h2 { 
-  font: normal 170% 'News Cycle', arial, sans-serif;
+  font: normal 170% arial, Helvetica, sans-serif; 
   /* color: #666; */
   color: #222;
   margin: 0;
@@ -56,19 +56,19 @@ h2 {
 }
 
 h3 { 
-  font: normal 125% 'trebuchet ms', arial, sans-serif;
+  font: normal 125% arial, Helvetica, sans-serif; 
 }
 
 h4, h5, h6 { 
   margin: 0;
   padding: 0 0 5px 0;
-  font: normal 110% arial, sans-serif;
+  font: normal 10% arial, Helvetica, sans-serif; 
   color: #999;
   line-height: 1.5em;
 }
 
 h5, h6 { 
-  font: italic 95% arial, sans-serif;
+  font: italic 95% arial, Helvetica, sans-serif; 
   color: #888;
   padding-bottom: 15px;
 }
@@ -123,7 +123,7 @@ header {
 }
 
 #logo { 
-  width: 400px;
+  width: 500px;
   float: center;
   height: 40px;
   background: transparent;
@@ -131,7 +131,7 @@ header {
 }
 
 #logo h1 { 
-  font: normal 200% 'News Cycle', arial, sans-serif;
+  font: normal 200% arial, Helvetica, sans-serif; 
   padding: 0 0 0 0;
   color: #222;
   /* letter-spacing: -2px; */
@@ -201,12 +201,12 @@ nav {
 }
 
 #blog_container h4 {
-  font: normal 170% 'News Cycle', arial, sans-serif;
+  font: normal 170% arial, Helvetica, sans-serif; 
   margin: 0 0 15px 0;
   padding: 5px 0;}
 
 #blog_container h4.select {
-  width: 475px;}
+  width: 700px;}
 
 .blog {
   background: url(../images/calendar.png) no-repeat;
@@ -235,7 +235,7 @@ nav {
 
 footer { 
   width: 950px;
-  font: normal 130% 'News Cycle',  arial, sans-serif;
+  font: normal 130% arial, Helvetica, sans-serif; 
   height: 90px;
   padding: 5px 0 5px 0;
   text-align: center; 
@@ -283,7 +283,7 @@ footer a:hover {
 }
   
 .form_settings .submit { 
-  font: 140% 'News Cycle', arial, sans-serif; 
+  font: 140% arial, Helvetica, sans-serif; 
   border: 0; 
   width: 100px; 
   margin: 0 0 0 162px; 
@@ -300,7 +300,7 @@ footer a:hover {
 }
 
 .form_settings textarea, .form_settings select { 
-  font: 100% 'trebuchet ms', arial, sans-serif; 
+  font: 100% arial, Helvetica, sans-serif; 
   border: 1px solid #666; 
   border-radius: 6px 6px 6px 6px;
   -webkit-border-radius: 6px 6px 6px 6px;
@@ -372,13 +372,13 @@ ul img {
   border-radius: 15px 15px 15px 15px;
   -moz-border-radius: 15px 15px 15px 15px;
   -webkit-border: 15px 15px 15px 15px;
-  height: 28px;
+  height: 25px;
   z-index: 8;
   position: absolute;
 }
 
 .lavaLampWithImage li a {
-  font: normal 130% 'News Cycle', sans-serif;
+  font: normal 130% arial, Helvetica, sans-serif; 
   text-shadow:1px 1px #FFF;
   text-decoration: none;
   color: #222;
