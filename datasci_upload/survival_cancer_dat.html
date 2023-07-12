@@ -1159,6 +1159,529 @@ summary(s3_weibull)</code></pre>
 ## Number of Newton-Raphson Iterations: 5 
 ## n= 476</code></pre>
 </div>
+<div id="semi-parametric-cox-model" class="section level3">
+<h3>4. Semi-parametric Cox model</h3>
+<p>In <strong>Cox proportional hazard model</strong>, the hazard
+function is modeled in 2 parts:</p>
+<ul>
+<li>the baseline hazard function <span class="math inline">\(h_0(t)\)</span></li>
+<li>the time-independent parametric components assuming multiplicative
+effects of covariates. Mathematically, this is convenient because
+coefficients are linearly model in the logarithmic scale, allowing
+<strong>hazard ratio</strong> computation.</li>
+</ul>
+<p>Cox model does not assume the shape of the baseline <span class="math inline">\(h_0(t)\)</span>. Therefore, it is not a full
+parametric model. The parametric part comes from regression-like
+behavior of the coefficients of the covariates.</p>
+<p><span class="math display">\[ h(t|X=x)=h_0(t)e^{x^{T}\beta} \]</span>
+<span class="math display">\[ H(t|x) = e^{x^{T}\beta} \int_{0}^{t}h_0(s)
+\cdot ds = e^{x^{T}\beta} \cdot H_0(t) \]</span> <span class="math display">\[ S(t|x) = e^{x^{T}\beta} \cdot S_0(t) \]</span>
+The hazard ratio is an estimate of the ratio of the hazard rate in the
+treated versus the control group (or a reference group). A HR &lt; 1
+indicates reduced hazard of death whereas a HR &gt; 1 indicates an
+increased hazard of death. It is not a probabiliy, it’s a ratio between
+rates.</p>
+<pre class="r"><code>library(gtsummary)
+# fit cox regressioon
+s4_cox = coxph(Surv(time_d, status) ~ treatment + sex + age + race, data=data_df)
+summary(s4_cox)</code></pre>
+<pre><code>## Call:
+## coxph(formula = Surv(time_d, status) ~ treatment + sex + age + 
+##     race, data = data_df)
+## 
+##   n= 476, number of events= 387 
+## 
+##                                   coef exp(coef) se(coef)     z Pr(&gt;|z|)    
+## treatmentchemo                1.733919  5.662805 0.209623 8.272  &lt; 2e-16 ***
+## treatmentradiation            0.707940  2.029807 0.257979 2.744  0.00607 ** 
+## sexmale                       0.228330  1.256500 0.109175 2.091  0.03649 *  
+## age                           0.026198  1.026544 0.004036 6.491 8.51e-11 ***
+## raceblack or african american 0.246666  1.279751 0.431774 0.571  0.56781    
+## racewhite                     0.507836  1.661691 0.385548 1.317  0.18778    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##                               exp(coef) exp(-coef) lower .95 upper .95
+## treatmentchemo                    5.663     0.1766    3.7549     8.540
+## treatmentradiation                2.030     0.4927    1.2242     3.365
+## sexmale                           1.257     0.7959    1.0145     1.556
+## age                               1.027     0.9741    1.0185     1.035
+## raceblack or african american     1.280     0.7814    0.5490     2.983
+## racewhite                         1.662     0.6018    0.7805     3.538
+## 
+## Concordance= 0.664  (se = 0.017 )
+## Likelihood ratio test= 114.6  on 6 df,   p=&lt;2e-16
+## Wald test            = 137.2  on 6 df,   p=&lt;2e-16
+## Score (logrank) test = 161.3  on 6 df,   p=&lt;2e-16</code></pre>
+<pre class="r"><code>s4_cox %&gt;% tbl_regression(exp = TRUE)</code></pre>
+<div id="aifesutfpm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#aifesutfpm table {
+font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+#aifesutfpm thead, #aifesutfpm tbody, #aifesutfpm tfoot, #aifesutfpm tr, #aifesutfpm td, #aifesutfpm th {
+border-style: none;
+}
+#aifesutfpm p {
+margin: 0;
+padding: 0;
+}
+#aifesutfpm .gt_table {
+display: table;
+border-collapse: collapse;
+line-height: normal;
+margin-left: auto;
+margin-right: auto;
+color: #333333;
+font-size: 16px;
+font-weight: normal;
+font-style: normal;
+background-color: #FFFFFF;
+width: auto;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #A8A8A8;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #A8A8A8;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+}
+#aifesutfpm .gt_caption {
+padding-top: 4px;
+padding-bottom: 4px;
+}
+#aifesutfpm .gt_title {
+color: #333333;
+font-size: 125%;
+font-weight: initial;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-color: #FFFFFF;
+border-bottom-width: 0;
+}
+#aifesutfpm .gt_subtitle {
+color: #333333;
+font-size: 85%;
+font-weight: initial;
+padding-top: 3px;
+padding-bottom: 5px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-color: #FFFFFF;
+border-top-width: 0;
+}
+#aifesutfpm .gt_heading {
+background-color: #FFFFFF;
+text-align: center;
+border-bottom-color: #FFFFFF;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#aifesutfpm .gt_bottom_border {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#aifesutfpm .gt_col_headings {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#aifesutfpm .gt_col_heading {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 6px;
+padding-left: 5px;
+padding-right: 5px;
+overflow-x: hidden;
+}
+#aifesutfpm .gt_column_spanner_outer {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+padding-top: 0;
+padding-bottom: 0;
+padding-left: 4px;
+padding-right: 4px;
+}
+#aifesutfpm .gt_column_spanner_outer:first-child {
+padding-left: 0;
+}
+#aifesutfpm .gt_column_spanner_outer:last-child {
+padding-right: 0;
+}
+#aifesutfpm .gt_column_spanner {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 5px;
+overflow-x: hidden;
+display: inline-block;
+width: 100%;
+}
+#aifesutfpm .gt_spanner_row {
+border-bottom-style: hidden;
+}
+#aifesutfpm .gt_group_heading {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: middle;
+text-align: left;
+}
+#aifesutfpm .gt_empty_group_heading {
+padding: 0.5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+vertical-align: middle;
+}
+#aifesutfpm .gt_from_md > :first-child {
+margin-top: 0;
+}
+#aifesutfpm .gt_from_md > :last-child {
+margin-bottom: 0;
+}
+#aifesutfpm .gt_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+margin: 10px;
+border-top-style: solid;
+border-top-width: 1px;
+border-top-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: middle;
+overflow-x: hidden;
+}
+#aifesutfpm .gt_stub {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: solid;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+padding-left: 5px;
+padding-right: 5px;
+}
+#aifesutfpm .gt_stub_row_group {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: solid;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+padding-left: 5px;
+padding-right: 5px;
+vertical-align: top;
+}
+#aifesutfpm .gt_row_group_first td {
+border-top-width: 2px;
+}
+#aifesutfpm .gt_row_group_first th {
+border-top-width: 2px;
+}
+#aifesutfpm .gt_summary_row {
+color: #333333;
+background-color: #FFFFFF;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#aifesutfpm .gt_first_summary_row {
+border-top-style: solid;
+border-top-color: #D3D3D3;
+}
+#aifesutfpm .gt_first_summary_row.thick {
+border-top-width: 2px;
+}
+#aifesutfpm .gt_last_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#aifesutfpm .gt_grand_summary_row {
+color: #333333;
+background-color: #FFFFFF;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#aifesutfpm .gt_first_grand_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-style: double;
+border-top-width: 6px;
+border-top-color: #D3D3D3;
+}
+#aifesutfpm .gt_last_grand_summary_row_top {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: double;
+border-bottom-width: 6px;
+border-bottom-color: #D3D3D3;
+}
+#aifesutfpm .gt_striped {
+background-color: rgba(128, 128, 128, 0.05);
+}
+#aifesutfpm .gt_table_body {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#aifesutfpm .gt_footnotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#aifesutfpm .gt_footnote {
+margin: 0px;
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#aifesutfpm .gt_sourcenotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#aifesutfpm .gt_sourcenote {
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#aifesutfpm .gt_left {
+text-align: left;
+}
+#aifesutfpm .gt_center {
+text-align: center;
+}
+#aifesutfpm .gt_right {
+text-align: right;
+font-variant-numeric: tabular-nums;
+}
+#aifesutfpm .gt_font_normal {
+font-weight: normal;
+}
+#aifesutfpm .gt_font_bold {
+font-weight: bold;
+}
+#aifesutfpm .gt_font_italic {
+font-style: italic;
+}
+#aifesutfpm .gt_super {
+font-size: 65%;
+}
+#aifesutfpm .gt_footnote_marks {
+font-size: 75%;
+vertical-align: 0.4em;
+position: initial;
+}
+#aifesutfpm .gt_asterisk {
+font-size: 100%;
+vertical-align: 0;
+}
+#aifesutfpm .gt_indent_1 {
+text-indent: 5px;
+}
+#aifesutfpm .gt_indent_2 {
+text-indent: 10px;
+}
+#aifesutfpm .gt_indent_3 {
+text-indent: 15px;
+}
+#aifesutfpm .gt_indent_4 {
+text-indent: 20px;
+}
+#aifesutfpm .gt_indent_5 {
+text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Characteristic&lt;/strong&gt;"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;HR&lt;/strong&gt;&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>HR</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;95% CI&lt;/strong&gt;&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>95% CI</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;p-value&lt;/strong&gt;"><strong>p-value</strong></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left">treatment</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    both</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    chemo</td>
+<td headers="estimate" class="gt_row gt_center">5.66</td>
+<td headers="ci" class="gt_row gt_center">3.75, 8.54</td>
+<td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    radiation</td>
+<td headers="estimate" class="gt_row gt_center">2.03</td>
+<td headers="ci" class="gt_row gt_center">1.22, 3.37</td>
+<td headers="p.value" class="gt_row gt_center">0.006</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">sex</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    female</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    male</td>
+<td headers="estimate" class="gt_row gt_center">1.26</td>
+<td headers="ci" class="gt_row gt_center">1.01, 1.56</td>
+<td headers="p.value" class="gt_row gt_center">0.036</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">age</td>
+<td headers="estimate" class="gt_row gt_center">1.03</td>
+<td headers="ci" class="gt_row gt_center">1.02, 1.03</td>
+<td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">race</td>
+<td headers="estimate" class="gt_row gt_center"></td>
+<td headers="ci" class="gt_row gt_center"></td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    asian</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="ci" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    black or african american</td>
+<td headers="estimate" class="gt_row gt_center">1.28</td>
+<td headers="ci" class="gt_row gt_center">0.55, 2.98</td>
+<td headers="p.value" class="gt_row gt_center">0.6</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    white</td>
+<td headers="estimate" class="gt_row gt_center">1.66</td>
+<td headers="ci" class="gt_row gt_center">0.78, 3.54</td>
+<td headers="p.value" class="gt_row gt_center">0.2</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="4"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> HR = Hazard Ratio, CI = Confidence Interval</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<p>s</p>
+<div id="selected-references" class="section level4">
+<h4>Selected References:</h4>
+<ol style="list-style-type: decimal">
+<li>Dirk F. Moore. Applied Survival Analysis using R.</li>
+<li>David G. Kleinbaum and Mitchel Klein. Survival Analysis - A
+Self-Learning Text.</li>
+<li><a href="https://portal.gdc.cancer.gov/" class="uri">https://portal.gdc.cancer.gov/</a> and <a href="http://bioconductor.org/packages/release/bioc/html/TCGAbiolinks.html" class="uri">http://bioconductor.org/packages/release/bioc/html/TCGAbiolinks.html</a></li>
+</ol>
+</div>
+</div>
 
 
 
